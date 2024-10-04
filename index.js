@@ -35,8 +35,12 @@ app.use(cors(corsOptions))
 app.use("/users", userRoutes);
 app.use("/product", upload.single('image'), productRoutes);
 
-app.post("", (req, res) => {
-    console.log(req.body)
+
+app.get("/", (req, res) => {
+    res.json({
+        status:200,
+        msg:"Active"
+    })
 })
 app.listen(8000, () => {
     console.log("Server is Started");

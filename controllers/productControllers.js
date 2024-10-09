@@ -49,8 +49,8 @@ const addToCart = async (req, res) => {
         });
         const result = await cartProduct.save();
         res.json({
-            status: true, 
-            result: result   
+            status: true,
+            result: result
         })
     } catch (err) {
         console.log(err)
@@ -75,4 +75,40 @@ const getCartProducts = async (req, res) => {
 }
 
 
-module.exports = { createProduct, getProducts, addToCart ,getCartProducts}
+
+const addQuantity = async (req, res) => {
+    console.log(req.params)
+    const product = await Cart.findByIdAndUpdate(
+        req.params.id,
+    );
+    product.quantity = parseInt(product.quantity + 1);
+    await product.save();
+    res.json(product)
+}
+
+const subQuantity = async (req, res) => {
+    console.log(req.params)
+    const product = await Cart.findByIdAndUpdate(
+        req.params.id,
+    );
+    product.quantity = parseInt(product.quantity - 1);
+    await product.save();
+    console.log(product)
+}
+
+
+const removeItem = async (req, res) => {
+    console.log(req.params)
+    const product = await Cart.findById(
+        req.params.id,
+    );
+    await product.deleteOne({ _id: req.params.id });
+    res.json({
+        product: product,
+        status: true
+    })
+}
+
+
+
+module.exports = { createProduct, getProducts, addToCart, getCartProducts, addQuantity, subQuantity, removeItem }

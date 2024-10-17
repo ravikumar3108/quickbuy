@@ -34,7 +34,6 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
 
     const allProducts = await Products.find()
-
     res.status(200).json({
         status: true,
         products: allProducts

@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken")
 const Users = require("../models/userSchema")
 
 const Signup = async (req, res, next) => {
-    // console.log(req.body)
+    console.log(req.body)
     try {
-        const { name, email, password } = req.body
-        const user = await Users.findOne({ email })
+        const { name, email, password } = req.body 
+        const user = await Users.findOne({ email: email })
         if (user) {
             res.status(201).json({ message: "User already registered", status: false })
         }
@@ -69,4 +69,18 @@ const login = async (req, res, next) => {
 
     }
 }
-module.exports = { login, Signup }
+const profile = async (req, res, next) => {
+    if (req.user) {
+        res.json({
+            status: true,
+            user: req.user
+        })
+    } else {
+        res.json({
+            status: false,
+            user: null
+        })
+    }
+
+}
+module.exports = { login, Signup, profile }

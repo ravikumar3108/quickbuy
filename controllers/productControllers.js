@@ -40,6 +40,38 @@ const getProducts = async (req, res) => {
     })
 }
 
+const singleProduct = async (req, res) => {
+    const id = req.params.id
+    const singleProduct = await Products.find({ _id: id })
+    res.status(200).json({
+        status: true,
+        products: singleProduct
+    })
+}
+
+const deleteProduct = async (req, res) => {
+    console.log(req.params)
+    const product = await Products.findById(
+        req.params.id,
+    );
+    await product.deleteOne({ _id: req.params.id });
+    res.json({
+        product: product,
+        status: true
+    })
+}
+
+const updateProduct = async (req, res) => {
+
+    const singleProduct = await Products.findByIdAndUpdate(req.params.id,
+        req.body,
+        { new: true })
+    res.status(200).json({
+        status: true,
+        products: singleProduct
+    })
+}
+
 const addToCart = async (req, res) => {
     try {
         const cartProduct = new Cart({
@@ -54,7 +86,6 @@ const addToCart = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
-
 }
 
 
@@ -110,4 +141,6 @@ const removeItem = async (req, res) => {
 
 
 
-module.exports = { createProduct, getProducts, addToCart, getCartProducts, addQuantity, subQuantity, removeItem }
+
+
+module.exports = { createProduct, updateProduct, deleteProduct, getProducts, addToCart, getCartProducts, addQuantity, subQuantity, removeItem, singleProduct }
